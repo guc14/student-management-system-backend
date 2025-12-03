@@ -1,130 +1,118 @@
-🎓 Student Management System (Spring Boot + MySQL)
+# 🎓 Student Management System (Spring Boot + MySQL)
 
-A clean, modular, production-style Student Management System API built with
-Java 17, Spring Boot, Spring Data JPA, MySQL, and DTO + Exception Handler + Logging AOP.
+A clean, modular, production-style Student Management System API built with  
+**Java 17, Spring Boot 3, Spring Data JPA, MySQL**,  
+and includes **DTO**, **Exception Handling**, **Logging AOP**, and **JPA relationships**.
 
-This project is designed to demonstrate backend development skills suitable for junior backend developer positions.
+This project is designed to demonstrate backend development skills suitable for **junior backend developer positions**.
 
-🛠 Tech Stack
+---
 
-Java 17
+## 🛠 Tech Stack
 
-Spring Boot 3
+![Java](https://img.shields.io/badge/Java-17-blue)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.x-brightgreen)
+![Spring Web](https://img.shields.io/badge/Spring_Web-MVC-green)
+![Spring Data JPA](https://img.shields.io/badge/Spring_Data_JPA-ORM-yellow)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-orange)
+![Maven](https://img.shields.io/badge/Maven-Build-red)
+![Lombok](https://img.shields.io/badge/Lombok-Annotation-green)
+![AOP](https://img.shields.io/badge/AOP-Logging-blue)
 
-Spring Web
+---
 
-Spring Data JPA
+## 📦 Project Structure
 
-MySQL
-
-Maven
-
-Lombok
-
-AOP Logging
-
-📦 Project Structure
+```
 com.example.demo
-├── controller      # REST APIs
-├── service         # Business Logic
-├── repository      # JPA Repositories
-├── model           # Entities (Student, Profile, Course, Enrollment)
-├── dto             # Request/Response DTOs
-├── mapper          # Convert Entity ↔ DTO
-├── exception       # Global handlers & custom exceptions
-└── aop             # Logging Aspect
+├── controller         # REST APIs
+├── service            # Business Logic
+├── repository         # JPA Repositories
+├── model              # Entities (Student, Profile, Course, Enrollment)
+├── dto                # Request/Response DTOs
+├── mapper             # Convert Entity ↔ DTO
+├── exception          # Global handlers & custom exceptions
+└── aop                # Logging Aspect
+```
 
-✨ Features
-👤 Student Management
+---
 
-Create student
+## ✨ Features
 
-Update student
+### 🧑‍🎓 Student Management
+- Create student  
+- Update student  
+- Delete student  
+- Get student by ID  
+- Get all students (DTO formatted)
 
-Delete student
+---
 
-Get student by ID
+### 📝 Student Profile (1-to-1)
+- Create profile for a student  
+- Update profile  
+- Get profile info  
 
-Get all students (DTO formatted)
+---
 
-📝 Student Profile (1-to-1)
+### 📚 Course & Enrollment (Many-to-Many)
+- Create course  
+- Student enrolls a course  
+- Get courses selected by a student  
+- Get students enrolled in a course  
+- Get a student's enrollment info (with timestamp)
 
-Create profile for a student
+---
 
-Update profile
+## 🔗 API Examples
 
-Get profile
-
-Includes phone, address, emergency contact
-
-Linked through student_id
-
-📚 Course Enrollment (Many-to-Many)
-
-Student selects a course
-
-Get a student's selected courses
-
-Get all students of a course
-
-Enrollment info includes selected date + course name
-
-📄 Pagination + Sorting + Search (预留结构)
-
-Standard PageResponse DTO
-
-Clean JSON for frontend use
-
-🛡 Global Exception Handling
-
-Example error response:
-
+### ✅ Create Student
+```
+POST /students
 {
-  "status": 404,
-  "message": "Student not found",
-  "path": "/students/99"
+  "name": "Anna",
+  "age": 20
 }
+```
 
-📜 Logging AOP
+### ✅ Get All Students (DTO)
+```
+GET /students
+```
 
-Logs:
+### ✅ Create Profile (1-to-1)
+```
+POST /profiles/student/1
+{
+  "email": "anna@test.com",
+  "phone": "123456"
+}
+```
 
-API endpoint
+### ✅ Enrollment (Many-to-Many)
+```
+POST /courses/1/students/2
+```
 
-HTTP method
+---
 
-Execution time
+## 🏃 Run the Project
 
-Inputs & outputs
-
-🔗 API Endpoints (Summary)
-Student API
-Method	Endpoint	Description
-POST	/students	Create new student
-GET	/students	Get all students
-GET	/students/{id}	Get student by ID
-PUT	/students/{id}	Update student
-DELETE	/students/{id}	Delete student
-Student Profile API
-Method	Endpoint	Description
-POST	/students/{id}/profile	Create profile
-GET	/students/{id}/profile	Get profile
-PUT	/students/{id}/profile	Update profile
-Course API
-Method	Endpoint	Description
-POST	/courses/{courseId}/students/{studentId}	Student enrolls course
-GET	/courses/by-student/{studentId}	Get courses of student
-GET	/courses/{courseId}/students	Get students of a course
-GET	/courses/enrollments/by-student/{studentId}	Enrollment info
-🚀 Running the Project
-1️⃣ Configure MySQL
+### 1️⃣ Configure MySQL
+```
 CREATE DATABASE student_db;
+```
 
-2️⃣ Run the project
+### 2️⃣ Run Spring Boot
+```
 mvn spring-boot:run
+```
 
-🙌 Author
+---
 
-Chen — Spring Boot backend developer in training.
+## 👩 Author
 
-If you like this project, please ⭐ star the repo — it helps a lot!
+**Chen** — Spring Boot backend developer in training.
+
+If you like this project, please ⭐ star the repo — your support means a lot!
+
