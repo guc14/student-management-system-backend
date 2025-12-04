@@ -4,39 +4,33 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "enrollments") // 对应数据库里的 enrollments 表
+@Table(
+        name = "enrollments",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"student_id", "course_id"})
+        }
+)
 public class Enrollment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 多个 Enrollment 对应一个 Student
-    @ManyToOne
-    @JoinColumn(name = "student_id")
+    // 多个选课记录 -> 一个学生
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
-    // 多个 Enrollment 对应一个 Course
-    @ManyToOne
-    @JoinColumn(name = "course_id")
+    // 多个选课记录 -> 一门课程
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 
     // 选课时间
-    @Column(name = "enrolled_at")
+    @Column(name = "enrolled_at", nullable = false)
     private LocalDateTime enrolledAt;
 
-    // JPA 要求的无参构造
-    public Enrollment() {
-    }
-
-    // 业务用：new Enrollment(student, course)
-    public Enrollment(Student student, Course course) {
-        this.student = student;
-        this.course = course;
-        this.enrolledAt = LocalDateTime.now();
-    }
-
-    // ===== Getter & Setter =====
+    // ===== getters / setters =====
 
     public Long getId() {
         return id;

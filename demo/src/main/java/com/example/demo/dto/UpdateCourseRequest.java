@@ -1,35 +1,20 @@
-package com.example.demo.model;
+package com.example.demo.dto;
 
-import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
-@Entity
-@Table(name = "courses")
-public class Course {
+public class UpdateCourseRequest {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    // 课程名称
-    @Column(nullable = false, length = 100)
+    @NotBlank(message = "Course name cannot be blank")
+    @Size(max = 100, message = "Course name length must be <= 100 characters")
     private String name;
 
-    // 课程描述（可选）
-    @Column(length = 500)
+    @Size(max = 500, message = "Description length must be <= 500 characters")
     private String description;
 
-    // 学分（或课时数，可选）
+    @Min(value = 0, message = "Credit must be >= 0")
     private Integer credit;
-
-    // getter / setter
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

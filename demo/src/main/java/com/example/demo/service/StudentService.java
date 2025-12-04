@@ -8,6 +8,10 @@ import com.example.demo.model.Student;
 import com.example.demo.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
+// ✅ 新增的两个 import（分页 Page / Pageable）
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -81,5 +85,56 @@ public class StudentService {
                         new StudentNotFoundException("Student not found with id = " + id));
 
         studentRepository.delete(student);
+    }
+
+    // ✅✅ 新增：综合查询（名字 keyword + 年龄区间 + 分页 + 排序）
+    public Page<StudentDto> searchStudents(
+            String keyword,      // 可选：名字关键字（模糊搜索）
+            Integer minAge,      // 可选：最小年龄
+            Integer maxAge,      // 可选：最大年龄
+            Pageable pageable    // 分页 + 排序（Pageable，Zhōng-shì: pēi-jǐ-bǒu）
+    ) {
+        // 1. 先处理 keyword，去掉首尾空格
+        String trimmedKeyword = (keyword == null ? null : keyword.trim());
+
+        boolean hasKeyword = (trimmedKeyword != null && !trimmedKeyword.isEmpty());
+        boolean hasAgeRange = (minAge != null && maxAge != null);
+        // ✅ 小优化：如果传进来的 minAge > maxAge，自动帮用户交换
+        if (hasAgeRange && minAge > maxAge) {
+            int tmp = minAge;
+            minAge = maxAge;
+            maxAge = tmp;
+        }
+        // 2. 根据不同的组合，调用你 Repository 里对应的方法
+        Page<Student> page;
+
+        if (hasKeyword && hasAgeRange) {
+            // 名字 + 年龄区间
+            page = studentRepository.findByNameContainingIgnoreCaseAndAgeBetween(
+                    trimmedKeyword,
+                    minAge,
+                    maxAge,
+                    pageable
+            );
+        } else if (hasKeyword) {
+            // 只有名字模糊搜索
+            page = studentRepository.findByNameContainingIgnoreCase(
+                    trimmedKeyword,
+                    pageable
+            );
+        } else if (hasAgeRange) {
+            // 只有年龄区间
+            page = studentRepository.findByAgeBetween(
+                    minAge,
+                    maxAge,
+                    pageable
+            );
+        } else {
+            // 都没传：查全部 + 分页
+            page = studentRepository.findAll(pageable);
+        }
+
+        // 3. 把 Page<Student> 映射成 Page<StudentDto>
+        return page.map(this::toDto);
     }
 }

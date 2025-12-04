@@ -13,7 +13,8 @@ public class CourseMapper {
         return new CourseDto(
                 course.getId(),
                 course.getName(),
-                course.getDescription()
+                course.getDescription(),
+                course.getCredit()   // ⭐ 补上的第 4 个参数（修复报错）
         );
     }
 

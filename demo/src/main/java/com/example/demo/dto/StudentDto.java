@@ -1,17 +1,21 @@
 package com.example.demo.dto;
 
 public class StudentDto {
+
     private Long id;
     private String name;
     private Integer age;
 
-    public  StudentDto(){}
-    public StudentDto(Long id,String name,Integer age){
-        this.id=id;
-        this.name=name;
-        this.age=age;
+    public StudentDto() {
     }
-    public Long getId(){
+
+    public StudentDto(Long id, String name, Integer age) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+    }
+
+    public Long getId() {
         return id;
     }
 

@@ -1,29 +1,20 @@
 package com.example.demo.dto;
 
-public class CourseDto {
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
-    private Long id;
+public class CreateCourseRequest {
+
+    @NotBlank(message = "Course name cannot be blank")
+    @Size(max = 100, message = "Course name length must be <= 100 characters")
     private String name;
+
+    @Size(max = 500, message = "Description length must be <= 500 characters")
     private String description;
-    private Integer credit;  // 学分/课时（可选）
 
-    public CourseDto() {
-    }
-
-    public CourseDto(Long id, String name, String description, Integer credit) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.credit = credit;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Min(value = 0, message = "Credit must be >= 0")
+    private Integer credit;  // 可选，不传就是 null
 
     public String getName() {
         return name;

@@ -19,18 +19,17 @@ public class GlobalExceptionHandler {
             MethodArgumentNotValidException ex,
             HttpServletRequest request) {
 
-        // 拿第一个字段错误的提示信息（就是你 @NotBlank(message = "...") 写的）
         String message = ex.getBindingResult()
                 .getFieldErrors()
                 .get(0)
                 .getDefaultMessage();
 
         ExceptionResponse error = new ExceptionResponse(
-                LocalDateTime.now(),                 // timestamp
-                HttpStatus.BAD_REQUEST.value(),      // status = 400
-                "Bad Request",                       // error
-                message,                             // message
-                request.getRequestURI()              // path
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Bad Request",
+                message,
+                request.getRequestURI()
         );
 
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
@@ -40,6 +39,23 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(StudentNotFoundException.class)
     public ResponseEntity<ExceptionResponse> handleNotFound(
             StudentNotFoundException ex,
+            HttpServletRequest request) {
+
+        ExceptionResponse error = new ExceptionResponse(
+                LocalDateTime.now(),
+                HttpStatus.NOT_FOUND.value(),        // 404
+                "Not Found",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    // 2.1) 处理 CourseNotFoundException
+    @ExceptionHandler(CourseNotFoundException.class)
+    public ResponseEntity<ExceptionResponse> handleCourseNotFound(
+            CourseNotFoundException ex,
             HttpServletRequest request) {
 
         ExceptionResponse error = new ExceptionResponse(

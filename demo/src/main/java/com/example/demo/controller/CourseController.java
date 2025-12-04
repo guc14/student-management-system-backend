@@ -1,11 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.CourseDto;
-import com.example.demo.dto.EnrollmentInfoDto;
-import com.example.demo.dto.StudentDto;
+import com.example.demo.dto.*;
 import com.example.demo.service.CourseService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,52 +16,83 @@ public class CourseController {
         this.courseService = courseService;
     }
 
+    // ------------------- 课程 CRUD -------------------
+
+    // GET /courses
+    @GetMapping
+    public ApiResponse<List<CourseDto>> getAllCourses() {
+        return ApiResponse.success(courseService.getAllCourses());
+    }
+
+    // GET /courses/{id}
+    @GetMapping("/{id}")
+    public ApiResponse<CourseDto> getCourseById(@PathVariable Long id) {
+        return ApiResponse.success(courseService.getCourseById(id));
+    }
+
+    // POST /courses
+    @PostMapping
+    public ApiResponse<CourseDto> addCourse(@RequestBody CreateCourseRequest request) {
+        return ApiResponse.success(courseService.addCourse(request));
+    }
+
+    // PUT /courses/{id}
+    @PutMapping("/{id}")
+    public ApiResponse<CourseDto> updateCourse(
+            @PathVariable Long id,
+            @RequestBody UpdateCourseRequest request
+    ) {
+        return ApiResponse.success(courseService.updateCourse(id, request));
+    }
+
+    // DELETE /courses/{id}
+    @DeleteMapping("/{id}")
+    public ApiResponse<Void> deleteCourse(@PathVariable Long id) {
+        courseService.deleteCourse(id);
+        return ApiResponse.success(null);
+    }
+
+    // ------------------- 选课功能 -------------------
+
     /**
      * 学生选课
      * POST /courses/{courseId}/students/{studentId}
-     *
-     * 例子：
-     * POST http://localhost:8080/courses/1/students/2
-     * 表示：id=2 的学生选 id=1 的课程
      */
     @PostMapping("/{courseId}/students/{studentId}")
-    public ResponseEntity<Void> enrollStudentToCourse(
-            @PathVariable Long studentId,
-            @PathVariable Long courseId
+    public ApiResponse<Void> enrollStudentToCourse(
+            @PathVariable Long courseId,
+            @PathVariable Long studentId
     ) {
         courseService.enrollStudentToCourse(studentId, courseId);
-        // 201 Created，没有返回 body
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ApiResponse.success(null);
     }
 
     /**
-     * 查询某个学生选了哪些课程
+     * 查询学生选了哪些课程
      * GET /courses/by-student/{studentId}
-     *
-     * 例子：
-     * GET http://localhost:8080/courses/by-student/2
      */
     @GetMapping("/by-student/{studentId}")
-    public List<CourseDto> getCoursesByStudent(@PathVariable Long studentId) {
-        return courseService.getCoursesByStudent(studentId);
+    public ApiResponse<List<CourseDto>> getCoursesByStudent(@PathVariable Long studentId) {
+        return ApiResponse.success(courseService.getCoursesByStudent(studentId));
     }
+
     /**
-     * 查询某门课程有哪些学生
+     * 查询一门课程有哪些学生
      * GET /courses/{courseId}/students
-     *
-     * 例子：
-     * GET http://localhost:8080/courses/2/students
      */
     @GetMapping("/{courseId}/students")
-    public List<StudentDto> getStudentsByCourse(@PathVariable Long courseId) {
-        return courseService.getStudentsByCourse(courseId);
+    public ApiResponse<List<StudentDto>> getStudentsByCourse(@PathVariable Long courseId) {
+        return ApiResponse.success(courseService.getStudentsByCourse(courseId));
     }
+
     /**
-     * 查询某个学生的选课详细记录（包含课程名和选课时间）
+     * 查询学生选课详情
      * GET /courses/enrollments/by-student/{studentId}
      */
     @GetMapping("/enrollments/by-student/{studentId}")
-    public List<EnrollmentInfoDto> getEnrollmentInfosByStudent(@PathVariable Long studentId) {
-        return courseService.getEnrollmentInfosByStudent(studentId);
+    public ApiResponse<List<EnrollmentInfoDto>> getEnrollmentInfosByStudent(
+            @PathVariable Long studentId
+    ) {
+        return ApiResponse.success(courseService.getEnrollmentInfosByStudent(studentId));
     }
 }

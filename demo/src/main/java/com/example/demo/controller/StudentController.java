@@ -9,6 +9,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// 为 Page、Pageable、PageableDefault
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+
 @RestController
 @RequestMapping("/students")
 public class StudentController {
@@ -51,5 +56,17 @@ public class StudentController {
     public ApiResponse<Void> deleteStudent(@PathVariable Long id) {
         studentService.deleteStudent(id);
         return ApiResponse.success(null);
+    }
+
+    // ✅ 分页 + 搜索 + 年龄区间 + 排序 综合查询接口（带默认分页）
+    @GetMapping("/search")
+    public ApiResponse<Page<StudentDto>> searchStudents(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) Integer minAge,
+            @RequestParam(required = false) Integer maxAge,
+            @PageableDefault(page = 0, size = 5, sort = "id") Pageable pageable
+    ) {
+        Page<StudentDto> result = studentService.searchStudents(keyword, minAge, maxAge, pageable);
+        return ApiResponse.success(result);
     }
 }
