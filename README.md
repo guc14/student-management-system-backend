@@ -1,31 +1,29 @@
-# 🎓 Student Management System (Spring Boot + MySQL)
+🎓 Student Management System (Spring Boot + MySQL)
 
-A clean, modular Student Management System backend API built with **Java 17**, **Spring Boot 3**, **Spring Data JPA**, and **MySQL**.
+A clean, modular, production-style Student Management System API built with
+Java 17, Spring Boot 3, Spring Data JPA, and MySQL 8.
 
-It demonstrates:
+This project demonstrates:
 
-- Modern backend development practices (RESTful APIs, layered architecture, DTOs)
-- JPA relationships (One-to-One, Many-to-Many via Enrollment)
-- Global exception handling, validation, and logging with AOP
+Modern backend development practices (RESTful APIs, layered architecture, DTOs)
 
-> Designed as a portfolio project for **junior backend developer** positions.
+JPA relationships (One-to-One, Many-to-Many via Enrollment)
 
----
+Global exception handling, validation, unified API responses
 
-## 🧰 Tech Stack
+Logging with AOP
 
-- **Language**：Java 17（Zhōng-shì fāyīn: zhā-vǎ）
-- **Framework**：Spring Boot 3, Spring MVC
-- **Persistence**：Spring Data JPA, Hibernate, ORM
-- **Database**：MySQL 8
-- **Build Tool**：Maven
-- **Other**：Lombok, Validation (`jakarta.validation`), AOP, Logging (SLF4J / Logback)
+Designed as a portfolio project for junior backend developer positions.
 
----
-
-## 🗂 Project Structure
-
-```text
+🧰 Tech Stack
+Category	Technology
+Language	Java 17（Zhōng-shì fāyīn: zhā-vǎ）
+Framework	Spring Boot 3, Spring MVC
+Persistence	Spring Data JPA, Hibernate, ORM
+Database	MySQL 8
+Build Tool	Maven
+Other	Lombok, Validation, AOP, Logging (SLF4J / Logback)
+🗂 Project Structure
 com.example.demo
 │
 ├── controller          # REST controllers (Student, Profile, Course, Enrollment)
@@ -38,7 +36,7 @@ com.example.demo
 │   ├── Course
 │   └── Enrollment
 │
-├── dto                 # DTOs for requests & responses
+├── dto                 # Request & Response DTOs
 │   ├── StudentDto
 │   ├── CreateStudentRequest
 │   ├── UpdateStudentRequest
@@ -46,22 +44,18 @@ com.example.demo
 │   ├── CourseDto
 │   └── EnrollmentInfoDto
 │
-├── mapper              # Mapper classes (Entity ↔ DTO)
+├── mapper              # Convert Entity ↔ DTO
 │
 ├── exception           # Custom exceptions & GlobalExceptionHandler
-│   ├── StudentNotFoundException
-│   ├── CourseNotFoundException
-│   ├── EnrollmentException
-│   └── GlobalExceptionHandler
 │
-└── aop                 # Logging Aspect (method-level logging)
+└── aop                 # Logging Aspect
 
 ✨ Features
-👩‍🎓 1. Student Management
+👩‍🎓 Student Management
 
-Create a new student
+Create student
 
-Update existing student
+Update student
 
 Delete student
 
@@ -69,27 +63,25 @@ Get student by ID
 
 Get all students (DTO formatted)
 
-Input validation using @Valid and constraint annotations
+Validation using @Valid
 
-Clean, wrapped JSON responses using ApiResponse<T>
+Unified success response: ApiResponse<T>
 
-🧾 2. Student Profile (1-to-1)
+🧾 Student Profile (1-to-1)
 
-Each student has exactly one profile (StudentProfile)
+One student ↔ one profile
 
-Create profile for a student
+Create profile
 
 Update profile
 
-View a student's profile
+Fetch profile
 
-Implemented with bi-directional @OneToOne JPA relationship:
-
-Student ↔ StudentProfile
+Implemented using bi-directional @OneToOne
 
 Foreign key stored in student_profiles table
 
-📘 3. Course Management
+📘 Course Management
 
 Create course
 
@@ -103,38 +95,37 @@ Get all courses
 
 DTO-based communication (CourseDto)
 
-📝 4. Course Enrollment (Many-to-Many)
+📝 Course Enrollment (Many-to-Many)
 
-Student enrolls into a course
+Enroll student into a course
 
 Prevent duplicate enrollment
 
-Return structured info via EnrollmentInfoDto
+Detailed response using EnrollmentInfoDto
 
-Many-to-Many based on Enrollment join entity:
+Implemented using Enrollment join entity:
 
-Student —< Enrollment >— Course
+Student  —<  Enrollment  >—  Course
 
-Example scenario:
 
-Student(id=1) enrolls in Course(id=2) via
-POST /courses/2/students/1
+Example API:
+POST /courses/{courseId}/students/{studentId}
 
-🚨 5. Global Exception Handling
+🚨 Global Exception Handling
 
-Centralized exception handling using @RestControllerAdvice:
+Centralized exception handling with:
 
 StudentNotFoundException
 
 CourseNotFoundException
 
-EnrollmentException (e.g., duplicate enrollment)
+EnrollmentException
 
 Validation errors (MethodArgumentNotValidException)
 
-Generic fallback exceptions
+Generic fallback exception
 
-All errors return a consistent JSON format (e.g. ExceptionResponse):
+Example error response:
 
 {
   "timestamp": "2025-11-29T08:48:05.1214987",
@@ -144,9 +135,9 @@ All errors return a consistent JSON format (e.g. ExceptionResponse):
   "path": "/students/999"
 }
 
-📦 6. Unified API Response Wrapper
+📦 Unified API Response Wrapper
 
-All successful responses are wrapped in a generic ApiResponse<T>:
+All success responses follow:
 
 {
   "success": true,
@@ -160,28 +151,29 @@ All successful responses are wrapped in a generic ApiResponse<T>:
 
 Benefits:
 
-Frontend can always rely on the same top-level fields
+Consistent frontend handling
 
-Easier error handling and logging
+Cleaner API
 
-Cleaner, production-style API design
+Easier logging & debugging
 
-📋 7. Logging & AOP
+📋 Logging & AOP
 
-Simple logging aspect in aop package
+Logging Aspect in /aop
 
-Log request handling for selected methods
+Logs method execution for improved tracing
 
-Useful for debugging and tracing business logic flow
+Helps track controller → service → repository flow
 
 🧱 Database ER Diagram
 +-------------------+        +----------------------+
 |      Student      |        |   StudentProfile     |
 +-------------------+        +----------------------+
 | id (PK)           | 1   1  | id (PK)              |
-| name              |--------| address / phone ...  |
+| name              |--------| phone / address ...  |
 | age               |        | student_id (FK)      |
 +-------------------+        +----------------------+
+
 
           1                         *
         Student                Enrollment                 * 
@@ -213,21 +205,20 @@ Maven 3.x
 
 MySQL 8.x
 
-IDE (IntelliJ IDEA recommended)
+IntelliJ IDEA (recommended)
 
 2️⃣ Clone the Repository
-git clone <(https://github.com/guc14/student-management-system-backend)>
-cd student-management-system
-
+git clone https://github.com/guc14/student-management-system-backend
+cd student-management-system-backend
 
 3️⃣ Configure MySQL
 
-Create a database:
+Create database:
 
 CREATE DATABASE demo CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 
-Update src/main/resources/application.properties:
+Update application.properties:
 
 spring.datasource.url=jdbc:mysql://localhost:3306/demo
 spring.datasource.username=your-username
@@ -238,27 +229,25 @@ spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.format_sql=true
 
 4️⃣ Build & Run
-
-Using Maven:
-
 mvn clean package
 mvn spring-boot:run
 
 
-Or run the DemoApplication main class from your IDE.
+Or run DemoApplication in IDE.
 
-Server default port: http://localhost:8080
+App runs at:
+👉 http://localhost:8080
 
-📡 API Endpoints (Overview)
+📡 API Endpoints Overview
 👩‍🎓 Students
 Method	Endpoint	Description
 GET	/students	Get all students
 GET	/students/{id}	Get student by ID
-POST	/students	Create new student
+POST	/students	Create student
 PUT	/students/{id}	Update student
 DELETE	/students/{id}	Delete student
 
-Create Student – Request Body:
+Sample Request:
 
 {
   "name": "Anna",
@@ -267,11 +256,11 @@ Create Student – Request Body:
 
 🧾 Student Profile
 Method	Endpoint	Description
-POST	/students/{studentId}/profile	Create profile for student
-GET	/students/{studentId}/profile	Get student's profile
-PUT	/students/{studentId}/profile	Update student's profile
+POST	/students/{studentId}/profile	Create profile
+GET	/students/{studentId}/profile	Get profile
+PUT	/students/{studentId}/profile	Update profile
 
-Example response (wrapped):
+Response Example:
 
 {
   "success": true,
@@ -284,18 +273,18 @@ Example response (wrapped):
 
 📘 Courses
 Method	Endpoint	Description
-GET	/courses	Get all courses
-GET	/courses/{id}	Get course by ID
-POST	/courses	Create course
-PUT	/courses/{id}	Update course
-DELETE	/courses/{id}	Delete course
+GET	/courses	List all courses
+GET	/courses/{id}	Get course
+POST	/courses	Create
+PUT	/courses/{id}	Update
+DELETE	/courses/{id}	Delete
 📝 Enrollment
 Method	Endpoint	Description
-POST	/courses/{courseId}/students/{studentId}	Enroll student into a course
-GET	/students/{studentId}/courses	Get courses of a student
-GET	/courses/{courseId}/students	Get students of a course
+POST	/courses/{courseId}/students/{studentId}	Enroll student
+GET	/students/{studentId}/courses	Student enrolled courses
+GET	/courses/{courseId}/students	Students in a course
 
-Example success response:
+Success Response:
 
 {
   "success": true,
@@ -307,9 +296,6 @@ Example success response:
 }
 
 ❌ Validation Error Example
-
-If client sends invalid data:
-
 {
   "name": "",
   "age": -1
@@ -328,25 +314,30 @@ Server returns:
 
 🚀 Future Improvements
 
-Add pagination & sorting for list endpoints
+Pagination & sorting
 
-Add search filters (by name, age, course name, etc.)
+Search (name, age, course, etc.)
 
-Add authentication / authorization (JWT)
+JWT Authentication
 
-Add Swagger / OpenAPI documentation
+Swagger documentation
 
-Add integration tests and unit tests for services
+Unit & integration tests
 
 💬 About This Project
 
 This project is part of my journey transitioning into Java backend development.
+
 It focuses on:
 
-Writing clean and maintainable code
+Clean & maintainable code
 
-Understanding real-world Spring Boot project structure
+Real-world Spring Boot structure
 
-Practicing RESTful API design, JPA relationships, and error handling
+REST API design
 
-欢迎联系我交流学习心得 😊
+JPA relationship modeling
+
+Exception handling & validation
+
+欢迎交流学习心得 😊
