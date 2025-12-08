@@ -81,9 +81,6 @@ Student (1) ─── (1) StudentProfile
 Student (M) ─── (M) Course
 via Enrollment (middle table)
 
-yaml
-Copy code
-
 ---
 
 ## 📚 API Documentation (Swagger UI)
@@ -102,19 +99,22 @@ git clone https://github.com/your-username/student-management-system.git
 cd student-management-system
 ```
 ### 2. Create MySQL Database
-
+```sql
 CREATE DATABASE student_db;
+```
 ### 3. Configure application.properties
-
+```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/student_db
 spring.datasource.username=root
 spring.datasource.password=your_password
 spring.jpa.hibernate.ddl-auto=update
+```
 ****4. Run the project
 IntelliJ IDEA → Run DemoApplication
 or
-
+```bash
 mvn spring-boot:run
+```
 ## 🔍 Technical Highlights
 DTO pattern
 
@@ -129,7 +129,6 @@ Pagination with Page + Pageable
 Search filters
 
 Swagger documentation using @Tag / @Operation / @Parameter
-
 ##🔮 Future Enhancements
 JWT authentication
 
