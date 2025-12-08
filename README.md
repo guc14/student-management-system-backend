@@ -105,26 +105,23 @@ Swagger URL:
 
 ---
 
-## 🚀 How to Run
-
-### 1) Clone
-
-```bash
+🚀 How to Run
+1) Clone
 git clone https://github.com/your-username/student-management-system.git
 cd student-management-system
-### 2) MySQL Database
-sql
-Copy code
+
+2) MySQL Database
 CREATE DATABASE student_db;
-### 3) application.properties 配置
-properties
-Copy code
+
+3) application.properties
 spring.datasource.url=jdbc:mysql://localhost:3306/student_db
 spring.datasource.username=root
 spring.datasource.password=your_password
 spring.jpa.hibernate.ddl-auto=update
-### 4) Run 项目
-在 IDE（IntelliJ IDEA）中：
+
+4) Run
+
+在 IntelliJ IDEA 中：
 
 找到 DemoApplication
 
@@ -132,6 +129,4 @@ spring.jpa.hibernate.ddl-auto=update
 
 或者命令行运行：
 
-bash
-Copy code
 mvn spring-boot:run
