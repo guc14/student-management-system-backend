@@ -1,118 +1,180 @@
-# 🎓 Student Management System (Spring Boot + MySQL)
+🎓 Student Management System (Spring Boot + MySQL)
 
-A clean, modular, production-style Student Management System API built with  
-**Java 17, Spring Boot 3, Spring Data JPA, MySQL**,  
-and includes **DTO**, **Exception Handling**, **Logging AOP**, and **JPA relationships**.
+A clean, modular, production-style Student Management System API built with
+Java 17, Spring Boot 3, Spring Data JPA, and MySQL 8,
+and includes DTO, Exception Handling, Logging AOP, and JPA relationships.
 
-This project is designed to demonstrate backend development skills suitable for **junior backend developer positions**.
+This project is designed to demonstrate backend development skills suitable for junior backend developer positions.
 
----
+🧰 Tech Stack
 
-## 🛠 Tech Stack
+Java 17   |  
+Spring Boot 3.x   |  
+Spring Web MVC   |  
+Spring Data JPA   |  
+ORM   |  
+MySQL 8.0   |  
+Maven   |  
+Build   |  
+Lombok   |  
+Validation   |  
+AOP   |  
+Logging
 
-![Java](https://img.shields.io/badge/Java-17-blue)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.x-brightgreen)
-![Spring Web](https://img.shields.io/badge/Spring_Web-MVC-green)
-![Spring Data JPA](https://img.shields.io/badge/Spring_Data_JPA-ORM-yellow)
-![MySQL](https://img.shields.io/badge/MySQL-8.0-orange)
-![Maven](https://img.shields.io/badge/Maven-Build-red)
-![Lombok](https://img.shields.io/badge/Lombok-Annotation-green)
-![AOP](https://img.shields.io/badge/AOP-Logging-blue)
-
----
-
-## 📦 Project Structure
-
-```
+🗂 Project Structure
 com.example.demo
-├── controller         # REST APIs
-├── service            # Business Logic
-├── repository         # JPA Repositories
-├── model              # Entities (Student, Profile, Course, Enrollment)
-├── dto                # Request/Response DTOs
-├── mapper             # Convert Entity ↔ DTO
-├── exception          # Global handlers & custom exceptions
-└── aop                # Logging Aspect
-```
+│
+├── controller      # REST APIs
+├── service         # Business Logic
+├── repository      # JPA Repositories
+│
+├── model           # Entities (Student, Profile, Course, Enrollment)
+├── dto             # Request/Response DTOs
+├── mapper          # Convert Entity ↔ DTO
+│
+├── exception       # Global handlers & custom exceptions
+└── aop             # Logging Aspect
 
----
+✨ Features
+👩‍🎓 Student Management
 
-## ✨ Features
+Create student
 
-### 🧑‍🎓 Student Management
-- Create student  
-- Update student  
-- Delete student  
-- Get student by ID  
-- Get all students (DTO formatted)
+Update student
 
----
+Delete student
 
-### 📝 Student Profile (1-to-1)
-- Create profile for a student  
-- Update profile  
-- Get profile info  
+Get student by ID
 
----
+Get all students (DTO formatted)
 
-### 📚 Course & Enrollment (Many-to-Many)
-- Create course  
-- Student enrolls a course  
-- Get courses selected by a student  
-- Get students enrolled in a course  
-- Get a student's enrollment info (with timestamp)
+🧾 Student Profile (1-to-1)
 
----
+Create profile for a student
 
-## 🔗 API Examples
+Update profile
 
-### ✅ Create Student
-```
-POST /students
+Get profile by student ID
+
+One-to-one relationship: Student ↔ StudentProfile
+
+📘 Course Management
+
+Create course
+
+Update course
+
+Delete course
+
+Get course by ID
+
+List all courses
+
+📝 Course Enrollment (Many-to-Many)
+
+Student enrolls into a course
+
+Prevent duplicate enrollment
+
+Return structured enrollment info (EnrollmentInfoDto)
+
+Implemented using middle table Enrollment
+
+🚨 Global Exception Handling
+
+StudentNotFoundException
+
+CourseNotFoundException
+
+EnrollmentException
+
+Validation errors
+
+Consistent JSON error response format
+
+📦 Unified API Response Wrapper
+
+All successful responses follow:
+
 {
-  "name": "Anna",
-  "age": 20
+  "success": true,
+  "data": { ... }
 }
-```
 
-### ✅ Get All Students (DTO)
-```
-GET /students
-```
+🧱 Database ER Diagram
+Student 1 --- 1 StudentProfile
 
-### ✅ Create Profile (1-to-1)
-```
-POST /profiles/student/1
-{
-  "email": "anna@test.com",
-  "phone": "123456"
-}
-```
+Student 1 --- * Enrollment * --- 1 Course
 
-### ✅ Enrollment (Many-to-Many)
-```
-POST /courses/1/students/2
-```
+⚙️ Getting Started
+1️⃣ Clone the Repository
+git clone https://github.com/guc14/student-management-system-backend
 
----
+2️⃣ Configure MySQL
+CREATE DATABASE demo CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-## 🏃 Run the Project
-
-### 1️⃣ Configure MySQL
-```
-CREATE DATABASE student_db;
-```
-
-### 2️⃣ Run Spring Boot
-```
+3️⃣ Run the App
 mvn spring-boot:run
-```
 
----
 
-## 👩 Author
+App runs at:
+👉 http://localhost:8080
 
-**Chen** — Spring Boot backend developer in training.
+📡 API Endpoints
+Students
 
-If you like this project, please ⭐ star the repo — your support means a lot!
+GET /students
 
+GET /students/{id}
+
+POST /students
+
+PUT /students/{id}
+
+DELETE /students/{id}
+
+Student Profile
+
+POST /students/{studentId}/profile
+
+GET /students/{studentId}/profile
+
+PUT /students/{studentId}/profile
+
+Courses
+
+GET /courses
+
+GET /courses/{id}
+
+POST /courses
+
+PUT /courses/{id}
+
+DELETE /courses/{id}
+
+Enrollment
+
+POST /courses/{courseId}/students/{studentId}
+
+GET /students/{studentId}/courses
+
+GET /courses/{courseId}/students
+
+🚀 Future Improvements
+
+Pagination & sorting
+
+Search filters (name, age, course name)
+
+JWT Authentication
+
+Swagger / OpenAPI docs
+
+Test cases
+
+💬 About This Project
+
+This project is part of my journey transitioning into Java backend development — focusing on clean code, real-world architecture, and REST API design.
+
+欢迎交流学习心得 😊
