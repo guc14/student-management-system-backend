@@ -100,21 +100,21 @@ http://localhost:8080/swagger-ui/index.html
 ```bash
 git clone https://github.com/your-username/student-management-system.git
 cd student-management-system
-2. Create MySQL Database
+### 2. Create MySQL Database
 
 CREATE DATABASE student_db;
-3. Configure application.properties
+### 3. Configure application.properties
 
 spring.datasource.url=jdbc:mysql://localhost:3306/student_db
 spring.datasource.username=root
 spring.datasource.password=your_password
 spring.jpa.hibernate.ddl-auto=update
-4. Run the project
+****4. Run the project
 IntelliJ IDEA → Run DemoApplication
 or
 
 mvn spring-boot:run
-🔍 Technical Highlights
+##🔍 Technical Highlights
 DTO pattern
 
 One-to-One Relation (Student ↔ StudentProfile)
@@ -129,7 +129,7 @@ Search filters
 
 Swagger documentation using @Tag / @Operation / @Parameter
 
-🔮 Future Enhancements
+##🔮 Future Enhancements
 JWT authentication
 
 Docker support
