@@ -100,6 +100,7 @@ http://localhost:8080/swagger-ui/index.html
 ```bash
 git clone https://github.com/your-username/student-management-system.git
 cd student-management-system
+```
 ### 2. Create MySQL Database
 
 CREATE DATABASE student_db;
@@ -114,7 +115,7 @@ IntelliJ IDEA → Run DemoApplication
 or
 
 mvn spring-boot:run
-##🔍 Technical Highlights
+## 🔍 Technical Highlights
 DTO pattern
 
 One-to-One Relation (Student ↔ StudentProfile)
