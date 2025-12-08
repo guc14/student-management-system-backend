@@ -1,180 +1,157 @@
-🎓 Student Management System (Spring Boot + MySQL)
+# 🎓 Student Management System (Spring Boot + MySQL + Swagger)
 
-A clean, modular, production-style Student Management System API built with
-Java 17, Spring Boot 3, Spring Data JPA, and MySQL 8,
-and includes DTO, Exception Handling, Logging AOP, and JPA relationships.
+A clean, modular backend system built with **Java 17**, **Spring Boot 3**, **Spring Data JPA**, and **MySQL**.
 
-This project is designed to demonstrate backend development skills suitable for junior backend developer positions.
+This project demonstrates real-world backend development skills: RESTful APIs, DTO pattern, one-to-one & many-to-many relationships, pagination, search filters, validation, and fully interactive **Swagger / OpenAPI** documentation.
 
-🧰 Tech Stack
+> Designed as a portfolio project for **Java backend developer** roles.
 
-Java 17   |  
-Spring Boot 3.x   |  
-Spring Web MVC   |  
-Spring Data JPA   |  
-ORM   |  
-MySQL 8.0   |  
-Maven   |  
-Build   |  
-Lombok   |  
-Validation   |  
-AOP   |  
-Logging
+---
 
-🗂 Project Structure
-com.example.demo
+## 🧰 Tech Stack
+
+- **Language:** Java 17  
+- **Framework:** Spring Boot 3, Spring MVC  
+- **Persistence:** Spring Data JPA (Hibernate), ORM  
+- **Database:** MySQL 8  
+- **API Docs:** Swagger / OpenAPI (springdoc-openapi)  
+- **Tools:** Maven, Lombok, Postman / Swagger UI  
+- **Architecture:** Controller → Service → Repository → Entity
+
+---
+
+## 🏗 System Overview
+
+This system manages:
+
+- **Students**
+- **Courses**
+- **Student Profile** (One-to-One)
+- **Enrollments** (Many-to-Many)
+
+---
+
+# 🔶 Features
+
+### ✔ Student Management
+- CRUD  
+- Pagination + sorting  
+- Keyword + age range search  
+
+### ✔ Student Profile (1:1)
+- Create / Update / Delete  
+- GET `/students/{id}/profile`
+
+### ✔ Course Management
+- CRUD  
+- Students in a course  
+- Courses taken by a student
+
+### ✔ Enrollment System (M:N)
+- Enroll student into course  
+- Query by student  
+- Query by course  
+- EnrollmentInfo combined DTO
+
+### ✔ Swagger Documentation
+- Fully documented  
+- Module grouping  
+- Summary + description  
+- Try It Out support
+
+---
+
+# 🗂 Project Structure
+
+src/main/java/com/example/demo
 │
-├── controller      # REST APIs
-├── service         # Business Logic
-├── repository      # JPA Repositories
-│
-├── model           # Entities (Student, Profile, Course, Enrollment)
-├── dto             # Request/Response DTOs
-├── mapper          # Convert Entity ↔ DTO
-│
-├── exception       # Global handlers & custom exceptions
-└── aop             # Logging Aspect
+├── controller
+├── dto
+├── model
+├── repository
+├── service
+└── exception
 
-✨ Features
-👩‍🎓 Student Management
+yaml
+Copy code
 
-Create student
+---
 
-Update student
+# 🧩 Architecture Diagram
 
-Delete student
+Controller → Service → Repository → MySQL
 
-Get student by ID
+yaml
+Copy code
 
-Get all students (DTO formatted)
+---
 
-🧾 Student Profile (1-to-1)
+# 🗄 ER Diagram
 
-Create profile for a student
+Student (1) ─── (1) StudentProfile
 
-Update profile
+Student (M) ─── (M) Course
+↳ Enrollment (middle table)
 
-Get profile by student ID
+yaml
+Copy code
 
-One-to-one relationship: Student ↔ StudentProfile
+---
 
-📘 Course Management
+# 📚 API Documentation (Swagger UI)
 
-Create course
+Swagger URL:  
+**http://localhost:8080/swagger-ui/index.html**
 
-Update course
+---
 
-Delete course
+# 🚀 How to Run
 
-Get course by ID
+### 1) Clone
 
-List all courses
+```bash
+git clone https://github.com/your-username/student-management-system.git
+cd student-management-system
+2) MySQL Database
+sql
+Copy code
+CREATE DATABASE student_db;
+3) application.properties
+properties
+Copy code
+spring.datasource.url=jdbc:mysql://localhost:3306/student_db
+spring.datasource.username=root
+spring.datasource.password=your_password
+spring.jpa.hibernate.ddl-auto=update
+4) Run
+mathematica
+Copy code
+DemoApplication → Run ▶️
+or:
 
-📝 Course Enrollment (Many-to-Many)
-
-Student enrolls into a course
-
-Prevent duplicate enrollment
-
-Return structured enrollment info (EnrollmentInfoDto)
-
-Implemented using middle table Enrollment
-
-🚨 Global Exception Handling
-
-StudentNotFoundException
-
-CourseNotFoundException
-
-EnrollmentException
-
-Validation errors
-
-Consistent JSON error response format
-
-📦 Unified API Response Wrapper
-
-All successful responses follow:
-
-{
-  "success": true,
-  "data": { ... }
-}
-
-🧱 Database ER Diagram
-Student 1 --- 1 StudentProfile
-
-Student 1 --- * Enrollment * --- 1 Course
-
-⚙️ Getting Started
-1️⃣ Clone the Repository
-git clone https://github.com/guc14/student-management-system-backend
-
-2️⃣ Configure MySQL
-CREATE DATABASE demo CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
-3️⃣ Run the App
+bash
+Copy code
 mvn spring-boot:run
-
-
-App runs at:
-👉 http://localhost:8080
-
-📡 API Endpoints
-Students
-
-GET /students
-
-GET /students/{id}
-
-POST /students
-
-PUT /students/{id}
-
-DELETE /students/{id}
-
-Student Profile
-
-POST /students/{studentId}/profile
-
-GET /students/{studentId}/profile
-
-PUT /students/{studentId}/profile
-
-Courses
-
-GET /courses
-
-GET /courses/{id}
-
-POST /courses
-
-PUT /courses/{id}
-
-DELETE /courses/{id}
-
-Enrollment
-
-POST /courses/{courseId}/students/{studentId}
-
-GET /students/{studentId}/courses
-
-GET /courses/{courseId}/students
-
-🚀 Future Improvements
-
-Pagination & sorting
-
-Search filters (name, age, course name)
-
+🔍 Key Technical Highlights
+✔ DTO Pattern
+✔ One-to-One (Student ↔ StudentProfile)
+✔ Many-to-Many via Enrollment
+✔ Global Exception Handling
+✔ Pagination (Page + Pageable)
+✔ Search filters
+✔ Swagger documentation
+🔮 Future Enhancements
 JWT Authentication
 
-Swagger / OpenAPI docs
+Docker support
 
-Test cases
+Deploy to cloud
 
-💬 About This Project
+More modules (attendance / scheduling)
 
-This project is part of my journey transitioning into Java backend development — focusing on clean code, real-world architecture, and REST API design.
+🏁 Conclusion
+A complete backend portfolio project using modern backend engineering practices.
+Ideal for junior/intermediate Java backend developer roles.
 
-欢迎交流学习心得 😊
+yaml
+Copy code
