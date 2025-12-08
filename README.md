@@ -112,18 +112,18 @@ Swagger URL:
 ```bash
 git clone https://github.com/your-username/student-management-system.git
 cd student-management-system
-2) MySQL Database
+### 2) MySQL Database
 sql
 Copy code
 CREATE DATABASE student_db;
-3) application.properties 配置
+### 3) application.properties 配置
 properties
 Copy code
 spring.datasource.url=jdbc:mysql://localhost:3306/student_db
 spring.datasource.username=root
 spring.datasource.password=your_password
 spring.jpa.hibernate.ddl-auto=update
-4) Run 项目
+### 4) Run 项目
 在 IDE（IntelliJ IDEA）中：
 
 找到 DemoApplication
