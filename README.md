@@ -63,6 +63,7 @@ This system manages:
 
 # 🗂 Project Structure
 
+```txt
 src/main/java/com/example/demo
 │
 ├── controller
@@ -71,62 +72,47 @@ src/main/java/com/example/demo
 ├── repository
 ├── service
 └── exception
-
-yaml
+🧩 Architecture Diagram
+txt
 Copy code
-
----
-
-# 🧩 Architecture Diagram
-
 Controller → Service → Repository → MySQL
-
-yaml
+🗄 ER Diagram
+txt
 Copy code
-
----
-
-# 🗄 ER Diagram
-
 Student (1) ─── (1) StudentProfile
 
 Student (M) ─── (M) Course
-↳ Enrollment (middle table)
-
-yaml
-Copy code
-
----
-
-# 📚 API Documentation (Swagger UI)
-
-Swagger URL:  
-**http://localhost:8080/swagger-ui/index.html**
-
----
+        ↳ Enrollment (middle table)
+📚 API Documentation (Swagger UI)
+Swagger URL:
+http://localhost:8080/swagger-ui/index.html
 
 🚀 How to Run
 1) Clone
+bash
+Copy code
 git clone https://github.com/your-username/student-management-system.git
 cd student-management-system
-
 2) MySQL Database
+sql
+Copy code
 CREATE DATABASE student_db;
-
 3) application.properties
+properties
+Copy code
 spring.datasource.url=jdbc:mysql://localhost:3306/student_db
 spring.datasource.username=root
 spring.datasource.password=your_password
 spring.jpa.hibernate.ddl-auto=update
-
 4) Run
+In IntelliJ IDEA:
 
-在 IntelliJ IDEA 中：
+Open DemoApplication
 
-找到 DemoApplication
+Click Run ▶️
 
-点击 Run ▶️
+Or run from command line:
 
-或者命令行运行：
-
+bash
+Copy code
 mvn spring-boot:run
