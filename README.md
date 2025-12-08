@@ -109,12 +109,19 @@ spring.datasource.username=root
 spring.datasource.password=your_password
 spring.jpa.hibernate.ddl-auto=update
 ```
-****4. Run the project
-IntelliJ IDEA → Run DemoApplication
-or
+### 4. Run the project
+
+In IntelliJ IDEA:
+
+- Open `DemoApplication`
+- Click **Run ▶️**
+
+Or run from command line:
+
 ```bash
 mvn spring-boot:run
 ```
+
 ## 🔍 Technical Highlights
 DTO pattern
 
