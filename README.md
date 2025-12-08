@@ -105,7 +105,7 @@ Swagger URL:
 
 ---
 
-# 🚀 How to Run
+## 🚀 How to Run
 
 ### 1) Clone
 
@@ -116,42 +116,22 @@ cd student-management-system
 sql
 Copy code
 CREATE DATABASE student_db;
-3) application.properties
+3) application.properties 配置
 properties
 Copy code
 spring.datasource.url=jdbc:mysql://localhost:3306/student_db
 spring.datasource.username=root
 spring.datasource.password=your_password
 spring.jpa.hibernate.ddl-auto=update
-4) Run
-mathematica
-Copy code
-DemoApplication → Run ▶️
-or:
+4) Run 项目
+在 IDE（IntelliJ IDEA）中：
+
+找到 DemoApplication
+
+点击 Run ▶️
+
+或者命令行运行：
 
 bash
 Copy code
 mvn spring-boot:run
-🔍 Key Technical Highlights
-✔ DTO Pattern
-✔ One-to-One (Student ↔ StudentProfile)
-✔ Many-to-Many via Enrollment
-✔ Global Exception Handling
-✔ Pagination (Page + Pageable)
-✔ Search filters
-✔ Swagger documentation
-🔮 Future Enhancements
-JWT Authentication
-
-Docker support
-
-Deploy to cloud
-
-More modules (attendance / scheduling)
-
-🏁 Conclusion
-A complete backend portfolio project using modern backend engineering practices.
-Ideal for junior/intermediate Java backend developer roles.
-
-yaml
-Copy code
