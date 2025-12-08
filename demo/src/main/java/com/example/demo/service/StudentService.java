@@ -8,7 +8,7 @@ import com.example.demo.model.Student;
 import com.example.demo.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
-// ✅ 新增的两个 import（分页 Page / Pageable）
+// ✅ 分页相关 import
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -39,12 +39,18 @@ public class StudentService {
 
     // ---------- 对应 Controller 的方法 ----------
 
-    // GET 所有学生
+    // GET 所有学生（未分页）
     public List<StudentDto> getAllStudents() {
         return studentRepository.findAll()
                 .stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());
+    }
+
+    // ✅ GET 分页查询所有学生 —— 对应 /students/page
+    public Page<StudentDto> getStudentsPage(Pageable pageable) {
+        Page<Student> page = studentRepository.findAll(pageable);
+        return page.map(this::toDto);
     }
 
     // GET 按 id 查询学生
@@ -87,25 +93,27 @@ public class StudentService {
         studentRepository.delete(student);
     }
 
-    // ✅✅ 新增：综合查询（名字 keyword + 年龄区间 + 分页 + 排序）
+    // ✅ 综合查询（名字 keyword + 年龄区间 + 分页 + 排序）
     public Page<StudentDto> searchStudents(
             String keyword,      // 可选：名字关键字（模糊搜索）
             Integer minAge,      // 可选：最小年龄
             Integer maxAge,      // 可选：最大年龄
-            Pageable pageable    // 分页 + 排序（Pageable，Zhōng-shì: pēi-jǐ-bǒu）
+            Pageable pageable    // 分页 + 排序
     ) {
         // 1. 先处理 keyword，去掉首尾空格
         String trimmedKeyword = (keyword == null ? null : keyword.trim());
 
         boolean hasKeyword = (trimmedKeyword != null && !trimmedKeyword.isEmpty());
         boolean hasAgeRange = (minAge != null && maxAge != null);
+
         // ✅ 小优化：如果传进来的 minAge > maxAge，自动帮用户交换
         if (hasAgeRange && minAge > maxAge) {
             int tmp = minAge;
             minAge = maxAge;
             maxAge = tmp;
         }
-        // 2. 根据不同的组合，调用你 Repository 里对应的方法
+
+        // 2. 根据不同的组合，调用 Repository 里对应的方法
         Page<Student> page;
 
         if (hasKeyword && hasAgeRange) {
