@@ -123,31 +123,24 @@ mvn spring-boot:run
 ```
 
 ## 🔍 Technical Highlights
--DTO pattern
 
--One-to-One Relation (Student ↔ StudentProfile)
-
--Many-to-Many with custom Enrollment table
-
--Global exception handler
-
--Pagination with Page + Pageable
-
--Search filters
-
--Swagger documentation using @Tag / @Operation / @Parameter
-
-##🔮 Future Enhancements
-
--JWT authentication
-
--Docker support
-
--Deployment (Render / Railway / AWS)
-
--Additional modules (attendance, scheduling)
-
-A complete backend portfolio project suitable for junior Java backend roles.
-
+- DTO pattern  
+- One-to-One Relation (Student ↔ StudentProfile)  
+- Many-to-Many with custom Enrollment table  
+- Global exception handler  
+- Pagination with Page + Pageable  
+- Search filters  
+- Swagger documentation using @Tag / @Operation / @Parameter  
 
 ---
+
+## 🔮 Future Enhancements
+
+- JWT authentication  
+- Docker support  
+- Deployment (Render / Railway / AWS)  
+- Additional modules (attendance, scheduling)  
+
+---
+
+A complete backend portfolio project suitable for junior Java backend roles.
