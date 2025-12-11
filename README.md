@@ -1,180 +1,146 @@
-🎓 Student Management System (Spring Boot + MySQL)
+# 🎓 Student Management System (Spring Boot + MySQL + Swagger)
 
-A clean, modular, production-style Student Management System API built with
-Java 17, Spring Boot 3, Spring Data JPA, and MySQL 8,
-and includes DTO, Exception Handling, Logging AOP, and JPA relationships.
+A clean backend system built with **Java 17**, **Spring Boot 3**, **Spring Data JPA**, and **MySQL**.
 
-This project is designed to demonstrate backend development skills suitable for junior backend developer positions.
+The project demonstrates real-world backend development skills: RESTful APIs, DTO pattern, one-to-one & many-to-many relationships, pagination, search filters, validation, and fully interactive **Swagger / OpenAPI** documentation.
 
-🧰 Tech Stack
+---
 
-Java 17   |  
-Spring Boot 3.x   |  
-Spring Web MVC   |  
-Spring Data JPA   |  
-ORM   |  
-MySQL 8.0   |  
-Maven   |  
-Build   |  
-Lombok   |  
-Validation   |  
-AOP   |  
-Logging
+## 🧰 Tech Stack
 
-🗂 Project Structure
-com.example.demo
-│
-├── controller      # REST APIs
-├── service         # Business Logic
-├── repository      # JPA Repositories
-│
-├── model           # Entities (Student, Profile, Course, Enrollment)
-├── dto             # Request/Response DTOs
-├── mapper          # Convert Entity ↔ DTO
-│
-├── exception       # Global handlers & custom exceptions
-└── aop             # Logging Aspect
+- Java 17  
+- Spring Boot 3  
+- Spring MVC  
+- Spring Data JPA (Hibernate)  
+- MySQL 8  
+- Swagger / OpenAPI  
+- Maven  
 
-✨ Features
-👩‍🎓 Student Management
+---
 
-Create student
+## 🏗 System Overview
 
-Update student
+This application includes:
 
-Delete student
+- Students  
+- Student Profile (1:1)  
+- Courses  
+- Enrollment (Many-to-Many)  
+- Search + filtering + pagination  
 
-Get student by ID
+---
 
-Get all students (DTO formatted)
+## 🔶 Features
 
-🧾 Student Profile (1-to-1)
+### Student Management
+- CRUD  
+- Pagination  
+- Keyword + age filtering  
 
-Create profile for a student
+### Student Profile
+- Create / Update / Delete  
+- GET `/students/{id}/profile`  
 
-Update profile
+### Course Management
+- CRUD  
+- Students in a course  
+- Courses taken by a student  
 
-Get profile by student ID
+### Enrollment System
+- Student enrolls in course  
+- Enrollment details (DTO)  
 
-One-to-one relationship: Student ↔ StudentProfile
+---
 
-📘 Course Management
+## 🗂 Project Structure
 
-Create course
+src/main/java/com/example/demo
+├── controller
+├── dto
+├── model
+├── repository
+├── service
+└── exception
 
-Update course
+---
 
-Delete course
+## 🧩 Architecture Diagram
 
-Get course by ID
+Controller → Service → Repository → MySQL
 
-List all courses
+---
 
-📝 Course Enrollment (Many-to-Many)
+## 🗄 ER Diagram
 
-Student enrolls into a course
+---
 
-Prevent duplicate enrollment
+## 🗄 ER Diagram
 
-Return structured enrollment info (EnrollmentInfoDto)
+Student (1) ─── (1) StudentProfile
 
-Implemented using middle table Enrollment
+Student (M) ─── (M) Course
+via Enrollment (middle table)
 
-🚨 Global Exception Handling
+---
 
-StudentNotFoundException
+## 📚 API Documentation (Swagger UI)
 
-CourseNotFoundException
+Swagger URL:  
+http://localhost:8080/swagger-ui/index.html
 
-EnrollmentException
+---
 
-Validation errors
+## 🚀 How to Run
 
-Consistent JSON error response format
+### 1. Clone
 
-📦 Unified API Response Wrapper
+```bash
+git clone https://github.com/your-username/student-management-system.git
+cd student-management-system
+```
+### 2. Create MySQL Database
+```sql
+CREATE DATABASE student_db;
+```
+### 3. Configure application.properties
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/student_db
+spring.datasource.username=root
+spring.datasource.password=your_password
+spring.jpa.hibernate.ddl-auto=update
+```
+### 4. Run the project
 
-All successful responses follow:
+In IntelliJ IDEA:
 
-{
-  "success": true,
-  "data": { ... }
-}
+- Open `DemoApplication`
+- Click **Run ▶️**
 
-🧱 Database ER Diagram
-Student 1 --- 1 StudentProfile
+Or run from command line:
 
-Student 1 --- * Enrollment * --- 1 Course
-
-⚙️ Getting Started
-1️⃣ Clone the Repository
-git clone https://github.com/guc14/student-management-system-backend
-
-2️⃣ Configure MySQL
-CREATE DATABASE demo CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
-3️⃣ Run the App
+```bash
 mvn spring-boot:run
+```
 
+## 🔍 Technical Highlights
 
-App runs at:
-👉 http://localhost:8080
+- DTO pattern  
+- One-to-One Relation (Student ↔ StudentProfile)  
+- Many-to-Many with custom Enrollment table  
+- Global exception handler  
+- Pagination with Page + Pageable  
+- Search filters  
+- Swagger documentation using @Tag / @Operation / @Parameter  
 
-📡 API Endpoints
-Students
+---
 
-GET /students
+## 🔮 Future Enhancements
 
-GET /students/{id}
+- JWT authentication  
+- Docker support  
+- Deployment (Render / Railway / AWS)  
+- Additional modules (attendance, scheduling)  
 
-POST /students
+---
 
-PUT /students/{id}
-
-DELETE /students/{id}
-
-Student Profile
-
-POST /students/{studentId}/profile
-
-GET /students/{studentId}/profile
-
-PUT /students/{studentId}/profile
-
-Courses
-
-GET /courses
-
-GET /courses/{id}
-
-POST /courses
-
-PUT /courses/{id}
-
-DELETE /courses/{id}
-
-Enrollment
-
-POST /courses/{courseId}/students/{studentId}
-
-GET /students/{studentId}/courses
-
-GET /courses/{courseId}/students
-
-🚀 Future Improvements
-
-Pagination & sorting
-
-Search filters (name, age, course name)
-
-JWT Authentication
-
-Swagger / OpenAPI docs
-
-Test cases
-
-💬 About This Project
-
-This project is part of my journey transitioning into Java backend development — focusing on clean code, real-world architecture, and REST API design.
-
-欢迎交流学习心得 😊
+A complete backend portfolio project suitable for junior Java backend roles.
