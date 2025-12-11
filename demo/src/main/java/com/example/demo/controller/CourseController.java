@@ -6,6 +6,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// ✅ Validation
+import jakarta.validation.Valid;
+
+// ✅ 分页相关
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+
 // Swagger 注解
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -87,7 +95,7 @@ public class CourseController {
                     description = "Course creation request payload",
                     required = true
             )
-            @RequestBody CreateCourseRequest request
+            @Valid @RequestBody CreateCourseRequest request
     ) {
         return ApiResponse.success(courseService.addCourse(request));
     }
@@ -114,7 +122,7 @@ public class CourseController {
     public ApiResponse<CourseDto> updateCourse(
             @Parameter(description = "Course ID", example = "1")
             @PathVariable Long id,
-            @RequestBody UpdateCourseRequest request
+            @Valid @RequestBody UpdateCourseRequest request
     ) {
         return ApiResponse.success(courseService.updateCourse(id, request));
     }
@@ -221,5 +229,41 @@ public class CourseController {
             @PathVariable Long studentId
     ) {
         return ApiResponse.success(courseService.getEnrollmentInfosByStudent(studentId));
+    }
+
+    // ------------------- ⭐ 高级查询：按课程 + 条件过滤学生 -------------------
+
+    @Operation(
+            summary = "Search students in a course",
+            description = "Search students who enrolled in a specific course with optional keyword and age range filters."
+    )
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "200",
+                    description = "Successfully returned filtered students in this course"
+            )
+    })
+    @GetMapping("/{courseId}/students/search")
+    public ApiResponse<Page<StudentDto>> searchStudentsInCourse(
+            @Parameter(description = "Course ID", example = "1")
+            @PathVariable Long courseId,
+
+            @Parameter(description = "Keyword in student name", example = "Alice")
+            @RequestParam(required = false) String keyword,
+
+            @Parameter(description = "Minimum age", example = "18")
+            @RequestParam(required = false) Integer minAge,
+
+            @Parameter(description = "Maximum age", example = "30")
+            @RequestParam(required = false) Integer maxAge,
+
+            @Parameter(
+                    description = "Pagination info (page, size, sort). Default: page=0, size=5, sort=id"
+            )
+            @PageableDefault(page = 0, size = 5, sort = "id") Pageable pageable
+    ) {
+        Page<StudentDto> result =
+                courseService.searchStudentsByCourse(courseId, keyword, minAge, maxAge, pageable);
+        return ApiResponse.success(result);
     }
 }

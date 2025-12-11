@@ -14,11 +14,16 @@ import com.example.demo.model.Student;
 import com.example.demo.repository.CourseRepository;
 import com.example.demo.repository.EnrollmentRepository;
 import com.example.demo.repository.StudentRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class CourseService {
@@ -144,7 +149,7 @@ public class CourseService {
                 .collect(Collectors.toList());
     }
 
-    // 查询某门课有哪些学生
+    // 查询某门课有哪些学生（简单 List 版）
     public List<StudentDto> getStudentsByCourse(Long courseId) {
 
         // 确认课程存在
@@ -182,4 +187,75 @@ public class CourseService {
                 .collect(Collectors.toList());
     }
 
+    // ================== ⭐ 新增：按课程 + 条件过滤学生（高级查询 + 分页） ==================
+
+    public Page<StudentDto> searchStudentsByCourse(Long courseId,
+                                                   String keyword,
+                                                   Integer minAge,
+                                                   Integer maxAge,
+                                                   Pageable pageable) {
+
+        // 先确认课程存在，不存在直接 404
+        courseRepository.findById(courseId)
+                .orElseThrow(() ->
+                        new CourseNotFoundException("Course not found with id = " + courseId));
+
+        // 1) 找出这门课的所有选课记录
+        List<Enrollment> enrollments = enrollmentRepository.findByCourseId(courseId);
+
+        // 2) 把 Enrollment 映射成 Student，并去重
+        List<Student> students = enrollments.stream()
+                .map(Enrollment::getStudent)
+                .distinct()
+                .toList();
+
+        // 3) 用 Stream 按条件过滤
+        Stream<Student> stream = students.stream();
+
+        // keyword：按 name 模糊搜索（忽略大小写）
+        if (keyword != null && !keyword.isBlank()) {
+            String kw = keyword.trim().toLowerCase();
+            stream = stream.filter(s ->
+                    s.getName() != null && s.getName().toLowerCase().contains(kw)
+            );
+        }
+
+        // 最小年龄
+        if (minAge != null) {
+            stream = stream.filter(s ->
+                    s.getAge() != null && s.getAge() >= minAge
+            );
+        }
+
+        // 最大年龄
+        if (maxAge != null) {
+            stream = stream.filter(s ->
+                    s.getAge() != null && s.getAge() <= maxAge
+            );
+        }
+
+        // 4) 排序（按 id 升序；你也可以改成按 name）
+        List<Student> filtered = stream
+                .sorted(Comparator.comparing(Student::getId))
+                .toList();
+
+        // 5) 手动做分页（PageImpl）
+        int pageSize = pageable.getPageSize();
+        int pageNumber = pageable.getPageNumber();
+        int fromIndex = pageNumber * pageSize;
+
+        if (fromIndex >= filtered.size()) {
+            // 超出范围，返回空页
+            return new PageImpl<>(List.of(), pageable, filtered.size());
+        }
+
+        int toIndex = Math.min(fromIndex + pageSize, filtered.size());
+
+        List<StudentDto> pageContent = filtered.subList(fromIndex, toIndex)
+                .stream()
+                .map(this::toStudentDto)
+                .toList();
+
+        return new PageImpl<>(pageContent, pageable, filtered.size());
+    }
 }

@@ -14,7 +14,7 @@ public class CreateCourseRequest {
     private String description;
 
     @Min(value = 0, message = "Credit must be >= 0")
-    private Integer credit;  // 可选，不传就是 null
+    private Integer credit;  // 可选，可以为 null
 
     public String getName() {
         return name;
