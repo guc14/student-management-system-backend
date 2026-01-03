@@ -15,11 +15,11 @@ public class Student {
 
     private Integer age;
 
-    // 一对一：一个学生对应一个 Profile
+    // One-to-one: one student is associated with one profile
     @OneToOne(mappedBy = "student", cascade = CascadeType.ALL)
     private StudentProfile profile;
 
-    // 一对多：一个 Student 有多个 Enrollment
+    // One-to-many: one student has multiple enrollments
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<Enrollment> enrollments;
 

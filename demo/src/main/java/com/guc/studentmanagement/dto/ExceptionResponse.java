@@ -11,10 +11,10 @@ public class ExceptionResponse {
     private String message;
     private String path;
 
-    // ⭐ 新增：字段级错误（Validation 使用）
+    // ⭐ New: field-level errors (used for validation)
     private Map<String, String> errors;
 
-    // 构造函数（带 errors）
+    // Constructor with field-level errors
     public ExceptionResponse(LocalDateTime timestamp,
                              int status,
                              String error,
@@ -29,7 +29,7 @@ public class ExceptionResponse {
         this.errors = errors;
     }
 
-    // 构造函数（不带 errors）给其他异常使用
+    // Constructor without field-level errors
     public ExceptionResponse(LocalDateTime timestamp,
                              int status,
                              String error,

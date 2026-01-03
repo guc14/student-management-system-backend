@@ -5,13 +5,12 @@ import com.guc.studentmanagement.dto.StudentProfileDto;
 import com.guc.studentmanagement.service.StudentProfileService;
 import org.springframework.web.bind.annotation.*;
 
-// Swagger 注解
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-// ⚠️ 不要 import Swagger 的 ApiResponse（避免和你的 ApiResponse 冲突）
-// import io.swagger.v3.oas.annotations.responses.ApiResponse;
+
 
 @RestController
 @RequestMapping("/students")
@@ -27,7 +26,7 @@ public class StudentProfileController {
         this.profileService = profileService;
     }
 
-    // POST /students/{id}/profile —— 创建 profile
+    // POST /students/{id}/profile —— create profile
     @Operation(
             summary = "Create student profile",
             description = "Create a new profile for a student using form-data parameters."
@@ -61,7 +60,7 @@ public class StudentProfileController {
         );
     }
 
-    // GET /students/{id}/profile —— 查询 profile
+    // GET /students/{id}/profile
     @Operation(
             summary = "Get student profile",
             description = "Retrieve the profile information of a specific student."
@@ -84,7 +83,7 @@ public class StudentProfileController {
         return ApiResponse.success(profileService.getProfile(id));
     }
 
-    // PUT /students/{id}/profile —— 更新 profile
+    // PUT /students/{id}/profile
     @Operation(
             summary = "Update student profile",
             description = "Update an existing student's profile using form-data parameters."
@@ -118,7 +117,7 @@ public class StudentProfileController {
         );
     }
 
-    // DELETE /students/{id}/profile —— 删除 profile
+    // DELETE /students/{id}/profile
     @Operation(
             summary = "Delete student profile",
             description = "Delete the profile associated with the given student ID."

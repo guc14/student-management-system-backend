@@ -16,17 +16,17 @@ public class Enrollment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 多个选课记录 -> 一个学生
+    // Many enrollment records -> one student
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
-    // 多个选课记录 -> 一门课程
+    // Many enrollment records -> one course
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 
-    // 选课时间
+    // Enrollment timestamp
     @Column(name = "enrolled_at", nullable = false)
     private LocalDateTime enrolledAt;
 

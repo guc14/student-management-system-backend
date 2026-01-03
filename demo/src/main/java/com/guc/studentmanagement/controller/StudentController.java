@@ -6,7 +6,7 @@ import com.guc.studentmanagement.dto.StudentDto;
 import com.guc.studentmanagement.dto.UpdateStudentRequest;
 import com.guc.studentmanagement.service.StudentService;
 
-// Swagger / OpenAPI 注解
+// Swagger / OpenAPI
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-// 为 Page、Pageable、PageableDefault
+//  Page、Pageable、PageableDefault
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -37,7 +37,7 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    // GET /students  —— 返回所有学生（用 DTO）
+    // GET /students  —— return student(DTO）
     @Operation(
             summary = "Get all students",
             description = "Return all students without pagination."
@@ -53,7 +53,7 @@ public class StudentController {
         return ApiResponse.success(studentService.getAllStudents());
     }
 
-    // GET /students/{id}  —— 按 id 查询
+    // GET /students/{id}
     @Operation(
             summary = "Get student by ID",
             description = "Find a student by its unique ID."
@@ -76,7 +76,7 @@ public class StudentController {
         return ApiResponse.success(studentService.getStudentById(id));
     }
 
-    // POST /students  —— 新建学生
+    // POST /students
     @Operation(
             summary = "Create a new student",
             description = "Create a new student using JSON request body."
@@ -102,7 +102,7 @@ public class StudentController {
         return ApiResponse.success(studentService.addStudent(request));
     }
 
-    // PUT /students/{id}  —— 更新学生
+    // PUT /students/{id}
     @Operation(
             summary = "Update an existing student",
             description = "Update a student by ID with the provided JSON request body."
@@ -130,7 +130,7 @@ public class StudentController {
         return ApiResponse.success(studentService.updateStudent(id, request));
     }
 
-    // DELETE /students/{id}  —— 删除学生
+    // DELETE /students/{id}
     @Operation(
             summary = "Delete a student",
             description = "Delete a student by its ID."
@@ -154,7 +154,7 @@ public class StudentController {
         return ApiResponse.success(null);
     }
 
-    // ✅ 分页 + 搜索 + 年龄区间 + 排序 综合查询接口（带默认分页）
+    // ✅ Comprehensive Query API with Pagination, Search, Age Range Filtering, and Sorting (Default Pagination Enabled)
     @Operation(
             summary = "Search students",
             description = "Search students by keyword and optional age range with pagination."
@@ -186,7 +186,7 @@ public class StudentController {
         return ApiResponse.success(result);
     }
 
-    // GET /students/page —— 分页获取所有学生
+    // GET /students/page —
     @Operation(
             summary = "Get students by page",
             description = "Return a pageable list of students with default page size = 5."

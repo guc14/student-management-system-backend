@@ -26,6 +26,5 @@ public class StudentMapper {
         return students.stream()
                 .map(StudentMapper::toDto)
                 .collect(Collectors.toList());
-        // Java 21 也可以写成：.toList()
     }
 }

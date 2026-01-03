@@ -30,7 +30,7 @@ public class LoggingAspect {
 
         String fullMethod = className + "." + methodName;
 
-        // 安全打印参数（避免出现 request/response 这种巨大对象）
+        // Safely log method arguments (avoid logging large objects such as request/response)
         String argsString = Arrays.stream(joinPoint.getArgs())
                 .map(this::safeToString)
                 .collect(Collectors.joining(", "));

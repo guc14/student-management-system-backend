@@ -8,7 +8,7 @@ import java.util.List;
 // ✅ Validation
 import jakarta.validation.Valid;
 
-// ✅ 分页相关
+// ✅ Pagination
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -18,8 +18,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-// ⚠️ 不要 import Swagger 的 ApiResponse，避免和你的 ApiResponse DTO 冲突
-// import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
 @RequestMapping("/courses")
@@ -149,7 +147,7 @@ public class CourseController {
         return ApiResponse.success(null);
     }
 
-    // ------------------- 选课功能 -------------------
+    // ------------------- Course Registration -------------------
 
     @Operation(
             summary = "Enroll a student into a course",
@@ -230,7 +228,7 @@ public class CourseController {
         return ApiResponse.success(courseService.getEnrollmentInfosByStudent(studentId));
     }
 
-    // ------------------- ⭐ 高级查询：按课程 + 条件过滤学生 -------------------
+    // ------------------- ⭐ Advanced Query: Filter Students by Course and Conditions -------------------
 
     @Operation(
             summary = "Search students in a course",

@@ -7,8 +7,8 @@ public class StudentProfileDto {
     private String address;
     private String emergencyContact;
 
-    private Long studentId;      // 只放 id 和名字就够了
-    private String studentName;  // 不再把整个 Student 放进去
+    private Long studentId;
+    private String studentName;
 
     // ===== Getter & Setter =====
     public Long getId() {

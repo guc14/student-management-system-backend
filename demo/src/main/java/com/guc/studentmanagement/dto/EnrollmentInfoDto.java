@@ -4,18 +4,18 @@ import java.time.LocalDateTime;
 
 public class EnrollmentInfoDto {
 
-    // 选课记录自身的 id
+    // ID of the enrollment record
     private Long enrollmentId;
 
-    // 学生信息
+    // Student information
     private Long studentId;
     private String studentName;
 
-    // 课程信息
+    // Course information
     private Long courseId;
     private String courseName;
 
-    // 选课时间
+    // Enrollment timestamp
     private LocalDateTime enrolledAt;
 
     public EnrollmentInfoDto() {

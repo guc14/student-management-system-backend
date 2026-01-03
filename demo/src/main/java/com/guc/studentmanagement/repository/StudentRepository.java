@@ -12,10 +12,10 @@ public interface StudentRepository extends
 
     Page<Student> findByNameContainingIgnoreCase(String name, Pageable pageable);
 
-    // 按年龄区间查询
+    // Query by age range
     Page<Student> findByAgeBetween(int minAge, int maxAge, Pageable pageable);
 
-    // 名字 + 年龄区间一起过滤（新加）, 按名字模糊搜索（忽略大小写）
+    // Filter by name and age range , Fuzzy search by name (case-insensitive)
     Page<Student> findByNameContainingIgnoreCaseAndAgeBetween(
             String name,
             int minAge,

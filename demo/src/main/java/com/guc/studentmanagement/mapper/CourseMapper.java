@@ -14,7 +14,7 @@ public class CourseMapper {
                 course.getId(),
                 course.getName(),
                 course.getDescription(),
-                course.getCredit()   // ⭐ 补上的第 4 个参数（修复报错）
+                course.getCredit()
         );
     }
 

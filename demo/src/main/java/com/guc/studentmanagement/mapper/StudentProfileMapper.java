@@ -28,7 +28,7 @@ public class StudentProfileMapper {
         return dto;
     }
 
-    // dto/input -> entity   ✅ 这一段就是刚刚缺少的 toEntity
+    // dto/input -> entity
     public StudentProfile toEntity(String phone,
                                    String address,
                                    String emergencyContact,

@@ -10,15 +10,15 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 课程名称
+    //  Course name
     @Column(nullable = false, length = 100)
     private String name;
 
-    // 课程描述（可选）
+    // Course description (optional)
     @Column(length = 500)
     private String description;
 
-    // 学分（或课时数，可选）
+    // Credits (or course hours, optional)
     private Integer credit;
 
     // getter / setter

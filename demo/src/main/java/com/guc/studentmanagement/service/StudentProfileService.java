@@ -70,18 +70,18 @@ public class StudentProfileService {
 
     // Delete profile
     public void deleteProfile(Long studentId) {
-        // 1. 找到 profile
+        // 1. find profile
         StudentProfile profile = profileRepository.findByStudentId(studentId)
                 .orElseThrow(() ->
                         new RuntimeException("Profile not found for student id = " + studentId));
 
-        // 2. 把 student 上的关联也清掉（更干净）
+        // 2. Clear the association on the student side as well (cleaner)
         Student student = profile.getStudent();
         if (student != null) {
             student.setProfile(null);
         }
 
-        // 3. 删除 profile
+        // 3. delete profile
         profileRepository.delete(profile);
     }
 

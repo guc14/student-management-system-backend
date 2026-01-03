@@ -40,9 +40,9 @@ public class CourseService {
         this.enrollmentRepository = enrollmentRepository;
     }
 
-    // ================== 工具方法 ==================
+    // ================== Utility Methods ==================
 
-    // Student -> StudentDto（在本 Service 内部用，不依赖 StudentService）
+    // Student -> StudentDto
     private StudentDto toStudentDto(Student student) {
         if (student == null) return null;
         StudentDto dto = new StudentDto();
@@ -52,15 +52,15 @@ public class CourseService {
         return dto;
     }
 
-    // ================== 课程 CRUD ==================
+    // ================== Course CRUD  ==================
 
-    // GET 所有课程
+    //GET all courses
     public List<CourseDto> getAllCourses() {
         List<Course> courses = courseRepository.findAll();
         return CourseMapper.toDtoList(courses);
     }
 
-    // GET 按 id 查课程
+    // GET course by id
     public CourseDto getCourseById(Long id) {
         Course course = courseRepository.findById(id)
                 .orElseThrow(() ->
@@ -68,7 +68,7 @@ public class CourseService {
         return CourseMapper.toDto(course);
     }
 
-    // POST 新建课程
+    // POST create new course
     public CourseDto addCourse(CreateCourseRequest request) {
         Course course = new Course();
         course.setName(request.getName());
@@ -79,7 +79,7 @@ public class CourseService {
         return CourseMapper.toDto(saved);
     }
 
-    // PUT 更新课程
+    // PUT updateCourse
     public CourseDto updateCourse(Long id, UpdateCourseRequest request) {
         Course course = courseRepository.findById(id)
                 .orElseThrow(() ->
@@ -93,7 +93,7 @@ public class CourseService {
         return CourseMapper.toDto(saved);
     }
 
-    // DELETE 删除课程
+    // DELETE deleteCourse
     public void deleteCourse(Long id) {
         Course course = courseRepository.findById(id)
                 .orElseThrow(() ->
@@ -102,29 +102,28 @@ public class CourseService {
         courseRepository.delete(course);
     }
 
-    // ================== 选课相关逻辑 ==================
+    // ================== Course Enrollment Logic ==================
 
-    // 学生选课
+    // Student enrolls in a course
     public void enrollStudentToCourse(Long studentId, Long courseId) {
 
-        // 1. 确认学生存在
+        // 1. Verify that the student exists
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() ->
                         new StudentNotFoundException("Student not found with id = " + studentId));
 
-        // 2. 确认课程存在
+        // 2. Verify that the course exists
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() ->
                         new CourseNotFoundException("Course not found with id = " + courseId));
 
-        // 3. 防止重复选课
+        // 3.  Prevent duplicate enrollment
         boolean exists = enrollmentRepository.existsByStudentIdAndCourseId(studentId, courseId);
         if (exists) {
-            // 这里选择“静默忽略”，不抛异常；你也可以自己改成抛异常
             return;
         }
 
-        // 4. 创建选课记录
+        // 4. Create enrollment record
         Enrollment enrollment = new Enrollment();
         enrollment.setStudent(student);
         enrollment.setCourse(course);
@@ -133,10 +132,10 @@ public class CourseService {
         enrollmentRepository.save(enrollment);
     }
 
-    // 查询某个学生选了哪些课程
+    // Retrieve courses selected by a student
     public List<CourseDto> getCoursesByStudent(Long studentId) {
 
-        // 确认学生存在
+        // Verify that the student exists
         studentRepository.findById(studentId)
                 .orElseThrow(() ->
                         new StudentNotFoundException("Student not found with id = " + studentId));
@@ -149,10 +148,10 @@ public class CourseService {
                 .collect(Collectors.toList());
     }
 
-    // 查询某门课有哪些学生（简单 List 版）
+    // Retrieve students enrolled in a course (simple list version)
     public List<StudentDto> getStudentsByCourse(Long courseId) {
 
-        // 确认课程存在
+        //  Verify that the course exists
         courseRepository.findById(courseId)
                 .orElseThrow(() ->
                         new CourseNotFoundException("Course not found with id = " + courseId));
@@ -165,10 +164,10 @@ public class CourseService {
                 .collect(Collectors.toList());
     }
 
-    // 查询某个学生的选课详细信息（课程 + 选课时间）
+    //  Retrieve detailed enrollment information for a student (course + enrollment time)
     public List<EnrollmentInfoDto> getEnrollmentInfosByStudent(Long studentId) {
 
-        // 确认学生存在
+        // Verify that the student exists
         studentRepository.findById(studentId)
                 .orElseThrow(() ->
                         new StudentNotFoundException("Student not found with id = " + studentId));
@@ -187,7 +186,7 @@ public class CourseService {
                 .collect(Collectors.toList());
     }
 
-    // ================== ⭐ 新增：按课程 + 条件过滤学生（高级查询 + 分页） ==================
+    // ================== ⭐ New: Search students by course with filters(advanced query with pagination)  ==================
 
     public Page<StudentDto> searchStudentsByCourse(Long courseId,
                                                    String keyword,
@@ -195,24 +194,24 @@ public class CourseService {
                                                    Integer maxAge,
                                                    Pageable pageable) {
 
-        // 先确认课程存在，不存在直接 404
+        // First verify that the course exists; return 404 if not found
         courseRepository.findById(courseId)
                 .orElseThrow(() ->
                         new CourseNotFoundException("Course not found with id = " + courseId));
 
-        // 1) 找出这门课的所有选课记录
+        // 1) Retrieve all enrollment records for the given course
         List<Enrollment> enrollments = enrollmentRepository.findByCourseId(courseId);
 
-        // 2) 把 Enrollment 映射成 Student，并去重
+        // 2) Map enrollments to students and remove duplicates
         List<Student> students = enrollments.stream()
                 .map(Enrollment::getStudent)
                 .distinct()
                 .toList();
 
-        // 3) 用 Stream 按条件过滤
+        // 3) Apply conditional filters using Stream
         Stream<Student> stream = students.stream();
 
-        // keyword：按 name 模糊搜索（忽略大小写）
+        // keyword: fuzzy search by name (case-insensitive)
         if (keyword != null && !keyword.isBlank()) {
             String kw = keyword.trim().toLowerCase();
             stream = stream.filter(s ->
@@ -220,32 +219,32 @@ public class CourseService {
             );
         }
 
-        // 最小年龄
+        // Minimum age
         if (minAge != null) {
             stream = stream.filter(s ->
                     s.getAge() != null && s.getAge() >= minAge
             );
         }
 
-        // 最大年龄
+        // Maximum age
         if (maxAge != null) {
             stream = stream.filter(s ->
                     s.getAge() != null && s.getAge() <= maxAge
             );
         }
 
-        // 4) 排序（按 id 升序；你也可以改成按 name）
+        // 4) Sort results (by id in ascending order; can be changed to sort by name)
         List<Student> filtered = stream
                 .sorted(Comparator.comparing(Student::getId))
                 .toList();
 
-        // 5) 手动做分页（PageImpl）
+        // 5) Perform manual pagination using PageImpl
         int pageSize = pageable.getPageSize();
         int pageNumber = pageable.getPageNumber();
         int fromIndex = pageNumber * pageSize;
 
         if (fromIndex >= filtered.size()) {
-            // 超出范围，返回空页
+            // Out of range, return an empty page
             return new PageImpl<>(List.of(), pageable, filtered.size());
         }
 

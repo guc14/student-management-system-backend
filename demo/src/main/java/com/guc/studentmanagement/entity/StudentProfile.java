@@ -17,7 +17,7 @@ public class StudentProfile {
     private String emergencyContact;
 
     @OneToOne
-    @JoinColumn(name = "student_id")   // 外键
+    @JoinColumn(name = "student_id")
     private Student student;
 
     // ===== Getter & Setter =====

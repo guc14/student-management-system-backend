@@ -8,7 +8,7 @@ import com.guc.studentmanagement.entity.Student;
 import com.guc.studentmanagement.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
-// ✅ 分页相关 import
+// ✅  Pagination-related imports
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -20,12 +20,12 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
 
-    // 构造函数注入 Repository
+    // Constructor-based dependency injection for the repository
     public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
 
-    // ---------- 内部工具方法：entity -> dto ----------
+    // ----------  Internal utility method: entity -> DTO ----------
     private StudentDto toDto(Student student) {
         if (student == null) return null;
 
@@ -33,13 +33,12 @@ public class StudentService {
         dto.setId(student.getId());
         dto.setName(student.getName());
         dto.setAge(student.getAge());
-        // 如果以后 StudentDto 里有更多字段，在这里继续 set 就好
         return dto;
     }
 
-    // ---------- 对应 Controller 的方法 ----------
+    // ---------- Methods corresponding to Controller endpoints ----------
 
-    // GET 所有学生（未分页）
+    //  GET all students (without pagination)
     public List<StudentDto> getAllStudents() {
         return studentRepository.findAll()
                 .stream()
@@ -47,13 +46,13 @@ public class StudentService {
                 .collect(Collectors.toList());
     }
 
-    // ✅ GET 分页查询所有学生 —— 对应 /students/page
+    // ✅  GET paginated list of all students — corresponds to /students/page
     public Page<StudentDto> getStudentsPage(Pageable pageable) {
         Page<Student> page = studentRepository.findAll(pageable);
         return page.map(this::toDto);
     }
 
-    // GET 按 id 查询学生
+    // GET student by id
     public StudentDto getStudentById(Long id) {
         Student student = studentRepository.findById(id)
                 .orElseThrow(() ->
@@ -61,7 +60,7 @@ public class StudentService {
         return toDto(student);
     }
 
-    // POST 新增学生  —— 对应 Controller 里的 addStudent(...)
+    // POST create a new student — corresponds to addStudent(...) in the Controller
     public StudentDto addStudent(CreateStudentRequest request) {
         Student student = new Student();
         student.setName(request.getName());
@@ -71,7 +70,7 @@ public class StudentService {
         return toDto(saved);
     }
 
-    // PUT 更新学生 —— 对应 Controller 里的 updateStudent(...)
+    // PUT update an existing student — corresponds to updateStudent(...) in the Controller
     public StudentDto updateStudent(Long id, UpdateStudentRequest request) {
         Student student = studentRepository.findById(id)
                 .orElseThrow(() ->
@@ -84,7 +83,7 @@ public class StudentService {
         return toDto(saved);
     }
 
-    // DELETE 删除学生
+    // DELETE student
     public void deleteStudent(Long id) {
         Student student = studentRepository.findById(id)
                 .orElseThrow(() ->
@@ -93,31 +92,31 @@ public class StudentService {
         studentRepository.delete(student);
     }
 
-    // ✅ 综合查询（名字 keyword + 年龄区间 + 分页 + 排序）
+    // ✅ Comprehensive search (name keyword + age range + pagination + sorting)
     public Page<StudentDto> searchStudents(
-            String keyword,      // 可选：名字关键字（模糊搜索）
-            Integer minAge,      // 可选：最小年龄
-            Integer maxAge,      // 可选：最大年龄
-            Pageable pageable    // 分页 + 排序
+            String keyword,
+            Integer minAge,
+            Integer maxAge,
+            Pageable pageable
     ) {
-        // 1. 先处理 keyword，去掉首尾空格
+        // 1. Preprocess keyword by trimming leading and trailing spaces
         String trimmedKeyword = (keyword == null ? null : keyword.trim());
 
         boolean hasKeyword = (trimmedKeyword != null && !trimmedKeyword.isEmpty());
         boolean hasAgeRange = (minAge != null && maxAge != null);
 
-        // ✅ 小优化：如果传进来的 minAge > maxAge，自动帮用户交换
+        // ✅ Small optimization: if minAge > maxAge, automatically swap the values
         if (hasAgeRange && minAge > maxAge) {
             int tmp = minAge;
             minAge = maxAge;
             maxAge = tmp;
         }
 
-        // 2. 根据不同的组合，调用 Repository 里对应的方法
+        // 2.  Call the corresponding repository method based on different combinations
         Page<Student> page;
 
         if (hasKeyword && hasAgeRange) {
-            // 名字 + 年龄区间
+            // Name keyword + age range
             page = studentRepository.findByNameContainingIgnoreCaseAndAgeBetween(
                     trimmedKeyword,
                     minAge,
@@ -125,24 +124,24 @@ public class StudentService {
                     pageable
             );
         } else if (hasKeyword) {
-            // 只有名字模糊搜索
+            // Name keyword only (fuzzy search)
             page = studentRepository.findByNameContainingIgnoreCase(
                     trimmedKeyword,
                     pageable
             );
         } else if (hasAgeRange) {
-            // 只有年龄区间
+            //  Age range only
             page = studentRepository.findByAgeBetween(
                     minAge,
                     maxAge,
                     pageable
             );
         } else {
-            // 都没传：查全部 + 分页
+            //  No filters provided: retrieve all students with pagination
             page = studentRepository.findAll(pageable);
         }
 
-        // 3. 把 Page<Student> 映射成 Page<StudentDto>
+        // 3. Map Page<Student> to Page<StudentDto>
         return page.map(this::toDto);
     }
 }

@@ -7,15 +7,15 @@ import java.util.List;
 
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
 
-    // 查某学生的所有选课
+    //  Retrieve all enrollments for a given student
     List<Enrollment> findByStudentId(Long studentId);
 
-    // 查某课程下的所有学生
+    // Retrieve all enrollments for a given course
     List<Enrollment> findByCourseId(Long courseId);
 
-    // 判断是否已经选过（防止重复选课）
+    // Check whether a student has already enrolled in a course(to prevent duplicate enrollment)
     boolean existsByStudentIdAndCourseId(Long studentId, Long courseId);
 
-    // 退课时用（如果以后要做退课接口）
+    // Used for course withdrawal(if a drop-course endpoint is added in the future)
     void deleteByStudentIdAndCourseId(Long studentId, Long courseId);
 }

@@ -4,12 +4,12 @@ import java.util.List;
 
 public class PageResponse<T> {
 
-    private List<T> content;     // 当前页的数据
-    private int page;            // 当前页号（从 0 开始）
-    private int size;            // 每页条数
-    private long totalElements;  // 总记录数
-    private int totalPages;      // 总页数
-    private boolean last;        // 是否为最后一页
+    private List<T> content;     // Data of the current page
+    private int page;            // Current page index (0-based)
+    private int size;            // Number of items per page
+    private long totalElements;  // Total number of elements
+    private int totalPages;      // Total number of pages
+    private boolean last;        // Indicates whether this is the last page
 
     public PageResponse() {
     }
