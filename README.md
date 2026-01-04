@@ -72,10 +72,6 @@ Controller → Service → Repository → MySQL
 
 ## 🗄 ER Diagram
 
----
-
-## 🗄 ER Diagram
-
 Student (1) ─── (1) StudentProfile
 
 Student (M) ─── (M) Course
