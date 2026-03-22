@@ -54,7 +54,7 @@ This application includes:
 
 ## 🗂 Project Structure
 
-src/main/java/com/example/demo
+src/main/java/com/guc/studentmanagement
 ├── controller
 ├── dto
 ├── model
@@ -91,7 +91,7 @@ http://localhost:8080/swagger-ui/index.html
 ### 1. Clone
 
 ```bash
-git clone https://github.com/your-username/student-management-system.git
+git clone https://github.com/guc14/student-management-system.git
 cd student-management-system
 ```
 ### 2. Create MySQL Database
